@@ -1,0 +1,12 @@
+GlobalParams:
+  ApiUser : ### NC username
+  UserName : ### NC username
+  ApiKey : ###
+  ClientIp : ### 111.111.111
+  Command : namecheap.ssl.getList
+  PageSize : 100
+
+
+
+
+
