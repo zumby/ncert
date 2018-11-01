@@ -4,21 +4,21 @@ import urllib.request
 import yaml
 from XMLpars import XMLparser
 
-# class that makes a call
+
 class Requester(object):
-    """docstring for Requester"""
+    """Call/Response operations"""
     def __init__(self, url, params):
         self.url = url
         self.params = params
 
-    # this one makes the params url-encoded and then byte-encoded
     def param_ready(self):
-        self.params = urllib.parse.urlencode(self.params) # url encode params
-        self.params = self.params.encode('ascii') # data should be bytess
+        """Prepare params for the call"""
+        self.params = urllib.parse.urlencode(self.params)   # params should be url encoded
+        self.params = self.params.encode('ascii')   # data should be bytes for POST
         return self.params
 
-    # this one makes the call to NC api using URL and changed params
     def api_call(self):
+        """Make a call to NC api"""
         self.req = urllib.request.Request(self.url, self.param_ready())
         return self.req
 
@@ -28,8 +28,9 @@ class Requester(object):
             the_page = response.read()
             return the_page
 
-# class holding the global API params
+
 class GlobalParams(object):
+    """Working with global API params"""
     def __init__(self):
         self.url = "https://api.sandbox.namecheap.com/xml.response"
         self.params = self.get_global_params()
@@ -39,12 +40,14 @@ class GlobalParams(object):
             config = yaml.load(stream)
             return config['GlobalParams']
 
+
 class Interactor(object):
+    """Interaction with user and action"""
     def __init__(self):
         self.interact()
 
     def interact(self):
-        print("Hi. This is ncert. Want to know what I can?")
+        print("Hi. This is ncert. Want to know what I can? (y/n)")
         action = input("> ")
 
         if action == 'y':
@@ -58,5 +61,6 @@ class Interactor(object):
             print(f"I have {len(cert_list)} new certs that I can use, and here are the IDs: \n", cert_list)
         else:
             exit(1)
+
 
 Interactor()
