@@ -5,11 +5,12 @@ class XMLparser(object):
     """Class for parsing NC API response and getting list of certs available for ncert usage"""
     def __init__(self, response):   # receives a response as a string or b'string
         self.response = response
+        # you can make this CONSTANT
         self.xml_ns = "{http://api.namecheap.com/xml.response}"
         self.ssl_tag = 'SSL'  # name of the tag with SSL details from xml tree
 
     def get_cert_available(self):
-        tag = self.xml_ns + self.ssl_tag
+        tag = self.xml_ns + self.ssl_tag # this can go to separate method
         cert_available = []
         # fromstring() parses XML from a string directly into an Element,
         # which is the root element of the parsed tree.
@@ -17,6 +18,8 @@ class XMLparser(object):
         for i in tree_root.iter(tag):
             cert_data = i.attrib  # dict with cert data like 'SSLType': 'ev ssl'
             # to get certs we need only
+
+            ### this may go to separate function
             if (not bool(cert_data['HostName']) and  # if HostName is empty (literally: if not False == True)
                     cert_data['SSLType'] == 'positivessl' and  # non free, positiveSSL only
                     cert_data['IsExpiredYN'] == 'false' and  # non-expired (this is unnecessary saves from failing)
