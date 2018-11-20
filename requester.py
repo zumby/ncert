@@ -7,20 +7,20 @@ class Requester(object):
         self.url = url
         self.params = params
 
-    def param_ready(self): # func name should be 'what func does' or 'what it gives back'
+    def params_for_call(self):
         """Prepare params for the call"""
-        # add .encode('ascii') after urlencode call
-        self.params = urllib.parse.urlencode(self.params)   # params should be url encoded
-        self.params = self.params.encode('ascii')   # data should be bytes for POST
+        # params should be url encoded
+        #  data should be bytes for POST
+        self.params = urllib.parse.urlencode(self.params).encode('ascii')
         return self.params
 
-    def api_call(self):
-        """Make a call to NC api"""
-        self.req = urllib.request.Request(self.url, self.param_ready())
+    def make_call(self):
+        """"Make a call to NC api and returns the response"""
+        self.req = urllib.request.Request(self.url, self.params_for_call())
         return self.req
 
-    # this one shows response of NC api
-    def show_response(self):  # rename this like 'get response'
-        with urllib.request.urlopen(self.api_call()) as response:
+    def get_response(self):
+        """ Read the response and return it as a string """
+        with urllib.request.urlopen(self.make_call()) as response:
             the_page = response.read()
             return the_page
